@@ -108,6 +108,7 @@ export class ClientsComponent {
   constructor(private http: HttpClient) {
     this.clientService = new ClientService(this.http);
 
+    // Debounce local name typing and apply frontend filter only
     this.nameFilter$.pipe(debounceTime(180), distinctUntilChanged()).subscribe((name) => {
       this.applyLocalNameFilter(name);
     });
@@ -124,13 +125,11 @@ export class ClientsComponent {
               ...c,
               id: c.id != null && !isNaN(Number(c.id)) ? Number(c.id) : c.id,
               isActive:
-                c.isActive === true ||
-                c.isActive === "true" ||
-                c.isActive === 1 ||
-                c.isActive === "1",
+                c.isActive === true
             }))
           : [];
 
+        // apply local frontend name filter after loading server data
         this.applyLocalNameFilter(this.filterText);
       },
       (err) => {
@@ -189,8 +188,9 @@ export class ClientsComponent {
     });
   }
 
+  // Emit name changes to the debounced local filter instead of calling backend
+  //TODO: Add server-side filtering
   onNameChanged(value: string) {
-    this.filterText = value;
     this.nameFilter$.next(value);
   }
 
