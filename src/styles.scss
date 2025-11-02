@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, sans-serif;
+}
+
+input {
+    width: 250px;
+    height: 40px;
+    margin: 8px;
+}
+
+button {
+    background-color: #006175;
+    border: 1px solid #006175;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 30px;
+}
+
+.header {
+    border-bottom: 1px solid #006175;
+    text-align: center;
+    
+    h1 {
+        margin: 0;
+        margin-bottom: 0px;
+        font-size: 24px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+
+        a {
+            padding: 8px 4px;
+            text-decoration: none;
+            color: #006175;
+            font-size: 18px;
+        }
+    }
+}
+
+.client-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border: 1px solid #006175;
+    background-color: #f9f9f9;
+    margin-bottom: 8px;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #006175;
+}
