@@ -1,4 +1,4 @@
-# Frontend Assignment
+# Gerimedica Frontend Assignment
 
 This project is built with [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0. You need to have the latest versions of Node.js and npm installed on your machine.
 

@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { ClientService } from "./client.service";
+import { Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 
 @Component({
   selector: "app-clients",
@@ -40,10 +42,20 @@ import { ClientService } from "./client.service";
       <div class="clients-filter">
         <h3>Filter clients</h3>
         <div class="flex-wrapper">
-          <input type="text" placeholder="Filter by clients name" [(ngModel)]="filterText" (input)="applyFilter()" />
+          <input
+            type="text"
+            placeholder="Type a name"
+            [(ngModel)]="filterText"
+            (ngModelChange)="onNameChanged($event)"
+          />
           <div class="filter-checkbox-wrapper">
-            <input id="filterCheckbox" type="checkbox" [(ngModel)]="filterActive" (change)="applyFilter()" /> 
-            <span style="padding-left: 8px"><label for="filterCheckbox">Filter by active state</label></span>
+            <input
+              id="filterCheckbox"
+              type="checkbox"
+              [(ngModel)]="filterActive"
+              (change)="onActiveChanged()"
+            />
+            <span style="padding-left: 8px"><label for="filterCheckbox">Show only active clients</label></span>
           </div>
         </div>
       </div>
@@ -76,63 +88,13 @@ import { ClientService } from "./client.service";
   `,
   standalone: false,
   styles: [
-    `
-      .filter-checkbox-wrapper {
-        padding-left: 20px;
-        display: flex;
-        align-items: center;
-      }
-      .flex-wrapper {
-        display: flex;
-        justify-content: flex-start;
-      }
-      .create-client {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-top: 16px;
-      }
-      .clients {
-        padding: 16px;
-      }
-      .new-client {
-        padding: 8px 32px;
-        border: 1px solid #006175;
-        margin-bottom: 16px;
-      }
-      .clients-filter {
-        padding: 8px 32px;
-        border: 1px solid #006175;
-        margin-bottom: 16px;
-      }
-      
-      #filterCheckbox {
-        width: 20px;
-        height: 20px;
-        padding-left: 40px
-      }
-
-      .client-card {
-        display:flex;
-        justify-content:space-between;
-        padding:8px 12px;
-        border:1px solid #ddd;
-        margin-bottom:8px;
-        border-radius:4px;
-        align-items:center;
-      }
-
-      .client-card input[type="text"], .client-card input[type="date"] {
-        padding:4px 6px;
-      }
-    `,
   ],
 })
 export class ClientsComponent {
   showNewClientForm: boolean = false;
   newClient: any = {};
-  clients: any[] = [];
-  filteredClients: any[] = [];
+  clients: any[] = []; 
+  filteredClients: any[] = []; 
   filterText: string = "";
   filterActive: boolean = false;
 
@@ -141,41 +103,77 @@ export class ClientsComponent {
 
   clientService;
 
+  private nameFilter$ = new Subject<string>();
+
   constructor(private http: HttpClient) {
     this.clientService = new ClientService(this.http);
-    this.clientService.getClients().subscribe((data: any) => {
-      this.clients = Array.isArray(data) ? data : [];
-      this.applyFilter();
+
+    this.nameFilter$.pipe(debounceTime(180), distinctUntilChanged()).subscribe((name) => {
+      this.applyLocalNameFilter(name);
+    });
+
+    this.loadFromServer();
+  }
+
+  private loadFromServer() {
+    const isActive = this.filterActive ? true : undefined;
+    this.clientService.getClients({ isActive }).subscribe(
+      (data: any) => {
+        this.clients = Array.isArray(data)
+          ? data.map((c: any) => ({
+              ...c,
+              id: c.id != null && !isNaN(Number(c.id)) ? Number(c.id) : c.id,
+              isActive:
+                c.isActive === true ||
+                c.isActive === "true" ||
+                c.isActive === 1 ||
+                c.isActive === "1",
+            }))
+          : [];
+
+        this.applyLocalNameFilter(this.filterText);
+      },
+      (err) => {
+        console.error('[Clients] loadFromServer error:', err);
+        this.clients = [];
+        this.filteredClients = [];
+      }
+    );
+  }
+
+  private applyLocalNameFilter(name: string) {
+    const text = (name || "").trim().toLowerCase();
+    if (!text) {
+      this.filteredClients = this.clients;
+      return;
+    }
+    this.filteredClients = this.clients.filter((c) => {
+      const first = (c.firstName || "").toString().toLowerCase();
+      const last = (c.lastName || "").toString().toLowerCase();
+      const full = `${first} ${last}`;
+      return full.includes(text) || first.includes(text) || last.includes(text);
     });
   }
 
   createClient() {
-    // create new client
-    this.clientService.createClient(this.newClient).subscribe((data: any) => {
-      this.clients.push(data);
+    this.clientService.createClient(this.newClient).subscribe(() => {
       this.newClient = {};
       this.showNewClientForm = false;
-      this.applyFilter();
+      this.loadFromServer();
     });
   }
 
   startEdit(client: any) {
     this.editingClientId = client.id;
-    // shallow copy so editing doesn't mutate original until save
     this.editClientCopy = { ...client };
   }
 
   saveEdit() {
     if (this.editingClientId == null) return;
-    this.clientService.updateClient(this.editingClientId, this.editClientCopy).subscribe((updated: any) => {
-      // update local list
-      const idx = this.clients.findIndex((c) => c.id === this.editingClientId);
-      if (idx > -1) {
-        this.clients[idx] = updated;
-      }
+    this.clientService.updateClient(this.editingClientId, this.editClientCopy).subscribe(() => {
       this.editingClientId = null;
       this.editClientCopy = {};
-      this.applyFilter();
+      this.loadFromServer();
     });
   }
 
@@ -187,21 +185,16 @@ export class ClientsComponent {
   deleteClient(client: any) {
     if (!confirm(`Delete client ${client.firstName} ${client.lastName}?`)) return;
     this.clientService.deleteClient(client.id).subscribe(() => {
-      this.clients = this.clients.filter((c) => c.id !== client.id);
-      this.applyFilter();
+      this.loadFromServer();
     });
   }
 
-  applyFilter() {
-    const text = this.filterText.trim().toLowerCase();
-    this.filteredClients = this.clients.filter((c) => {
-      const matchesText =
-        !text ||
-        `${c.firstName} ${c.lastName}`.toLowerCase().includes(text) ||
-        (c.firstName && c.firstName.toLowerCase().includes(text)) ||
-        (c.lastName && c.lastName.toLowerCase().includes(text));
-      const matchesActive = !this.filterActive || !!c.isActive;
-      return matchesText && matchesActive;
-    });
+  onNameChanged(value: string) {
+    this.filterText = value;
+    this.nameFilter$.next(value);
+  }
+
+  onActiveChanged() {
+    this.loadFromServer();
   }
 }

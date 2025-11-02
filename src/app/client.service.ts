@@ -1,21 +1,32 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 export class ClientService {
+  private base = 'http://localhost:3000/clients';
+
   constructor(protected http: HttpClient) {}
 
-  getClients() {
-    return this.http.get("http://localhost:3000/clients");
+  // Accept optional filters. `q` is a json-server full-text search;
+  // adjust param names if your backend expects something else.
+  getClients(filters?: { name?: string; isActive?: boolean }) {
+    let params = new HttpParams();
+    if (filters?.name) {
+      params = params.set('q', filters.name);
+    }
+    if (typeof filters?.isActive === 'boolean') {
+      params = params.set('isActive', String(filters.isActive));
+    }
+    return this.http.get(this.base, { params });
   }
 
   createClient(client: any) {
-    return this.http.post("http://localhost:3000/clients/", client);
+    return this.http.post(`${this.base}/`, client);
   }
 
   updateClient(id: number | string, client: any) {
-    return this.http.put(`http://localhost:3000/clients/${id}`, client);
+    return this.http.put(`${this.base}/${id}`, client);
   }
 
   deleteClient(id: number | string) {
-    return this.http.delete(`http://localhost:3000/clients/${id}`);
+    return this.http.delete(`${this.base}/${id}`);
   }
 }
