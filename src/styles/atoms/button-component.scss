@@ -1,99 +1,60 @@
-//TODO : refactor to reduce redundancy
-
-.app-button--primary {
+/* Base button styles */
+.app-button {
+    display: inline-flex;
     align-items: center;
-    background-color: #284b63;
+    justify-content: center;
     border-radius: 8px;
     border-width: 0;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
     box-sizing: border-box;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.05);
     color: #fff;
     font-size: 16px;
     height: 30px;
-    justify-content: center;
     line-height: 1;
-    margin: .5rem;
+    margin: 0.5rem;
     outline: none;
     overflow: hidden;
     padding: 0 32px;
     text-align: center;
     cursor: pointer;
+    background-color: #ccc; 
+}
+
+/* Variants */
+.app-button--primary {
+    background-color: #284b63;
 }
 
 .app-button--secondary {
-    align-items: center;
     background-color: #8ea8c3;
-    border-radius: 8px;
-    border-width: 0;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
-    box-sizing: border-box;
-    color: #fff;
-    font-size: 16px;
-    height: 30px;
-    justify-content: center;
-    line-height: 1;
-    margin: .5rem;
-    outline: none;
-    overflow: hidden;
-    padding: 0 32px;
-    text-align: center;
-    cursor: pointer;
 }
 
-//not yet used
+.app-button--edit {
+    background-color: #8ea8c3;
+}
+
+.app-button--delete {
+    background-color: #ff4d6d;
+    border-radius: 50%;
+    padding: 0 8px;
+    color: #000;
+    position: relative;
+}
+
+.app-button--delete::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("/deleteIcon.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Ghost variant (optional) */
 .app-button--ghost {
     background-color: transparent;
     border: 1px solid #ccc;
     color: #333;
-}
-
-.app-button--edit {
-    align-items: center;
-    background-color: #8ea8c3;
-    border-radius: 8px;
-    border-width: 0;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
-    box-sizing: border-box;
-    color: #fff;
-    font-size: 16px;
-    height: 30px;
-    justify-content: center;
-    line-height: 1;
-    margin: .5rem;
-    outline: none;
-    overflow: hidden;
-    padding: 0 32px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.app-button--delete {
-    align-items: center;
-    background-color: #ff4d6d;
-    border-radius:50%;
-    border-width: 0;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
-    box-sizing: border-box;
-    color: #000;
-    font-size: 16px;
-    height: 30px;
-    justify-content: center;
-    line-height: 1;
-    margin: .5rem;
-    outline: none;
-    overflow: hidden;
-    padding: 0 8px;
-    text-align: center;
-    cursor: pointer;
-
-    &::before {
-        content: "";
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        background-image: url("/deleteIcon.png");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
 }

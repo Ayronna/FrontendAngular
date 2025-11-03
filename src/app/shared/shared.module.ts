@@ -8,13 +8,11 @@ import { ClientFilterComponent } from '../organisms/client-filter.component';
 import { ClientCardComponent } from '../molecules/client-card.component';
 
 @NgModule({
-  // Standalone components must NOT be declared in an NgModule.
-  // Import them instead so they can be re-exported.
   declarations: [],
   imports: [
     CommonModule,
     FormsModule,
-    ButtonComponent, // import standalone component
+    ButtonComponent, 
     NewClientFormComponent,
     ClientFilterComponent,
     ClientCardComponent,
@@ -22,7 +20,7 @@ import { ClientCardComponent } from '../molecules/client-card.component';
   exports: [
     CommonModule,
     FormsModule,
-    ButtonComponent, // re-export for consumers of SharedModule
+    ButtonComponent,
     NewClientFormComponent,
     ClientFilterComponent,
     ClientCardComponent,

@@ -7,12 +7,9 @@ export class ClientService {
 
   constructor(protected http: HttpClient) {}
 
-  // Accepts optional filters. For json-server `q` does full-text search across fields;
-  // `isActive` will filter by the boolean field.
   getClients(filters?: { name?: string; isActive?: boolean }) {
     let params = new HttpParams();
     if (filters?.name) {
-      // json-server supports `q` for a simple full-text search across fields
       params = params.set('q', filters.name);
     }
     if (typeof filters?.isActive === 'boolean') {

@@ -26,12 +26,30 @@ import { debounceTime, distinctUntilChanged } from "rxjs/operators";
         (activeChange)="onActiveChanged($event)"
       ></client-filter>
 
-      <client-card
-        *ngFor="let client of filteredClients"
-        [client]="client"
-        (save)="handleSave($event)"
-        (remove)="deleteClient($event)"
-      ></client-card>
+      <div class="clients-list">
+        <client-card
+          *ngFor="let client of paginatedClients"
+          [client]="client"
+          (save)="handleSave($event)"
+          (remove)="deleteClient($event)"
+        ></client-card>
+      </div>
+
+      <div class="pagination" *ngIf="totalPages > 1">
+        <app-button type="button" variant="secondary" (clicked)="prevPage()" [disabled]="currentPage === 1">Prev</app-button>
+
+        <ng-container *ngFor="let p of pages">
+          <app-button
+            type="button"
+            [variant]="p === currentPage ? 'primary' : 'secondary'"
+            (clicked)="changePage(p)"
+          >
+            {{ p }}
+          </app-button>
+        </ng-container>
+
+        <app-button type="button" variant="secondary" (clicked)="nextPage()" [disabled]="currentPage === totalPages">Next</app-button>
+      </div>
     </div>
   `,
   standalone: false,
@@ -49,6 +67,10 @@ export class ClientsComponent {
   filteredClients: any[] = [];
   filterText: string = "";
   filterActive: boolean = false;
+
+  // Pagination state
+  pageSize = 5;
+  currentPage = 1;
 
   clientService;
 
@@ -84,6 +106,7 @@ export class ClientsComponent {
         console.error("[Clients] loadFromServer error:", err);
         this.clients = [];
         this.filteredClients = [];
+        this.currentPage = 1;
       }
     );
   }
@@ -97,6 +120,7 @@ export class ClientsComponent {
     const text = (name || "").trim().toLowerCase();
     if (!text) {
       this.filteredClients = this.clients;
+      this.currentPage = 1;
       return;
     }
     this.filteredClients = this.clients.filter((c) => {
@@ -105,6 +129,36 @@ export class ClientsComponent {
       const full = `${first} ${last}`;
       return full.includes(text) || first.includes(text) || last.includes(text);
     });
+    this.currentPage = 1;
+  }
+
+  // Computed pagination helpers
+  get totalPages(): number {
+    return Math.max(1, Math.ceil((this.filteredClients?.length || 0) / this.pageSize));
+  }
+
+  get pages(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  get paginatedClients(): any[] {
+    if (!this.filteredClients || this.filteredClients.length === 0) return [];
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredClients.slice(start, start + this.pageSize);
+  }
+
+  changePage(page: number) {
+    if (page < 1) page = 1;
+    if (page > this.totalPages) page = this.totalPages;
+    this.currentPage = page;
+  }
+
+  prevPage() {
+    this.changePage(this.currentPage - 1);
+  }
+
+  nextPage() {
+    this.changePage(this.currentPage + 1);
   }
 
   // Accept the client payload emitted by the new-client-form.

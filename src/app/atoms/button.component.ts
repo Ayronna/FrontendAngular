@@ -5,9 +5,8 @@ import { CommonModule } from '@angular/common';
  * Standard button component.
  * Applies variant-based CSS classes that match the global SCSS:
  *  - .app-button--primary, --secondary, --ghost, --edit, --delete
- *
- * The component is standalone and imports CommonModule (for ngClass).
- * Consumers should use the `variant` input to select styles (or 'add' maps to 'primary').
+ * 
+ * Use the `variant` input to select styles.
  */
 @Component({
   selector: 'app-button',

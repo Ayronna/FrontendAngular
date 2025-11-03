@@ -23,13 +23,6 @@ interface Client {
   template: `
 <h3>Create new client</h3>
 
-<div class="submit-errors" *ngIf="submitted && submitErrors.length">
-  <strong>Please fix the following:</strong>
-  <ul>
-    <li *ngFor="let err of submitErrors">{{ err }}</li>
-  </ul>
-</div>
-
 <form #form="ngForm" (ngSubmit)="handleCreate(form)" novalidate>
   <input
     name="firstName"

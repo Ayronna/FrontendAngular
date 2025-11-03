@@ -1,41 +1,44 @@
-.client-card {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(8px);
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    margin: 1rem 0;
-    transition: all 0.25s ease;
-}
+//TODO: This isn't BEM, fix it later
 
-.client-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.15);
+.client-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    gap: 0.75rem;
+    width: 400px;
+    box-sizing: border-box;
 }
 
 .client-view {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; 
+    width: 100%;        
+    gap: 0.75rem;
 }
 
 .client-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    text-align: left;
+    flex: 1;              
+    min-width: 0;       
 }
 
 .client-name {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #222;
+    font-size: 1.2rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .client-meta {
     font-size: 0.9rem;
-    color: #555;
     display: flex;
     gap: 0.75rem;
+    margin-top: 0.25rem;
     align-items: center;
 }
 
@@ -44,7 +47,7 @@
     border-radius: 8px;
     font-size: 0.8rem;
     font-weight: 500;
-    transition: all 0.2s ease;
+    display: inline-block;
 }
 
 .status.active {
@@ -57,74 +60,50 @@
     color: #c62828;
 }
 
+.client-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end; 
+    margin-left: auto;   
+}
+
 .client-actions app-button {
-    margin-left: 8px;
+    display: inline-flex;
 }
 
 .client-edit-form {
-    margin-top: 0.75rem;
-}
-
-.client-edit {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: flex-end;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .field {
     display: flex;
     flex-direction: column;
-    min-width: 180px;
-}
-
-.field label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #444;
-    margin-bottom: 4px;
 }
 
 .field input {
-    padding: 0.5rem 0.75rem;
-    border: 1.5px solid #ccc;
-    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #aaa;
+    border-radius: 4px;
     font-size: 0.95rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.field input:focus {
-    border-color: #0077ff;
-    box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.15);
-    outline: none;
 }
 
 .error {
     color: #d32f2f;
     font-size: 0.8rem;
     margin-top: 2px;
-    transition: opacity 0.3s ease;
 }
 
 .active-label {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-weight: 500;
-    color: #333;
 }
 
 .actions {
     display: flex;
     gap: 0.5rem;
-    margin-left: auto;
-}
-
-.actions app-button {
-    border-radius: 10px;
-    transition: transform 0.2s ease;
-}
-
-.actions app-button:hover {
-    transform: translateY(-1px);
+    margin-top: 0.5rem;
 }
