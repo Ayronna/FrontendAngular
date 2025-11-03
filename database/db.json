@@ -1,18 +1,11 @@
 {
   "clients": [
     {
-      "id": "1",
-      "firstName": "Aurora",
-      "lastName": "Starlight",
-      "birthdate": "1970-01-03",
-      "isActive": "true"
-    },
-    {
       "id": "2",
-      "firstName": "Thaddeus",
+      "firstName": "Pieter",
       "lastName": "Ironwood",
       "birthdate": "1957-01-10",
-      "isActive": "false"
+      "isActive": false
     },
     {
       "id": "3",

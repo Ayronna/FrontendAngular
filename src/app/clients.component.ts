@@ -8,37 +8,17 @@ import { debounceTime, distinctUntilChanged } from "rxjs/operators";
   selector: "app-clients",
   template: `
     <div class="create-client">
-      <button style="font-size: 16px" (click)="showNewClientForm = true">Create client</button>
+      <app-button (click)="showNewClientForm = !showNewClientForm"> Create client</app-button>
     </div>
 
-    <div class="clients">
-      <div class="new-client" *ngIf="showNewClientForm">
-        <h3>Create new client</h3>
-        <input
-          type="text"
-          placeholder="First name"
-          [(ngModel)]="newClient.firstName"
-        />
-        <input
-          type="text"
-          placeholder="Last name"
-          [(ngModel)]="newClient.lastName"
-        />
-        <input
-          type="date"
-          placeholder="Birthdate"
-          [(ngModel)]="newClient.birthdate"
-        />
-        <label style="display:flex; align-items:center; gap:8px; padding-top:8px">
-          <input type="checkbox" [(ngModel)]="newClient.isActive" />
-          Active
-        </label>
-        <div style="padding-top:8px">
-          <button (click)="createClient()">Create client</button>
-          <button (click)="showNewClientForm = false" style="margin-left:8px">Cancel</button>
-        </div>
-      </div>
+    <new-client-form
+      *ngIf="showNewClientForm"
+      [client]="newClient"
+      (create)="createClient($event)"
+      (cancel)="showNewClientForm = false"
+    ></new-client-form>
 
+    <div class="clients">
       <div class="clients-filter">
         <h3>Filter clients</h3>
         <div class="flex-wrapper">
@@ -87,14 +67,18 @@ import { debounceTime, distinctUntilChanged } from "rxjs/operators";
     </div>
   `,
   standalone: false,
-  styles: [
-  ],
+  styles: [],
 })
 export class ClientsComponent {
   showNewClientForm: boolean = false;
-  newClient: any = {};
-  clients: any[] = []; 
-  filteredClients: any[] = []; 
+  newClient: any = {
+    firstName: "",
+    lastName: "",
+    birthdate: "",
+    isActive: false,
+  };
+  clients: any[] = [];
+  filteredClients: any[] = [];
   filterText: string = "";
   filterActive: boolean = false;
 
@@ -124,8 +108,7 @@ export class ClientsComponent {
           ? data.map((c: any) => ({
               ...c,
               id: c.id != null && !isNaN(Number(c.id)) ? Number(c.id) : c.id,
-              isActive:
-                c.isActive === true
+              isActive: c.isActive === true,
             }))
           : [];
 
@@ -133,7 +116,7 @@ export class ClientsComponent {
         this.applyLocalNameFilter(this.filterText);
       },
       (err) => {
-        console.error('[Clients] loadFromServer error:', err);
+        console.error("[Clients] loadFromServer error:", err);
         this.clients = [];
         this.filteredClients = [];
       }
@@ -154,9 +137,16 @@ export class ClientsComponent {
     });
   }
 
-  createClient() {
-    this.clientService.createClient(this.newClient).subscribe(() => {
-      this.newClient = {};
+  // Accept the client payload emitted by the new-client-form.
+  createClient(clientPayload?: any) {
+    const payload = clientPayload ?? this.newClient;
+    this.clientService.createClient(payload).subscribe(() => {
+      this.newClient = {
+        firstName: "",
+        lastName: "",
+        birthdate: "",
+        isActive: false,
+      };
       this.showNewClientForm = false;
       this.loadFromServer();
     });
@@ -189,7 +179,7 @@ export class ClientsComponent {
   }
 
   // Emit name changes to the debounced local filter instead of calling backend
-  //TODO: Add server-side filtering
+  // TODO: Add server-side filtering
   onNameChanged(value: string) {
     this.nameFilter$.next(value);
   }

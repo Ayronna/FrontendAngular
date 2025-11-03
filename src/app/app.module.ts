@@ -7,10 +7,11 @@ import { AppComponent } from "./app.component";
 import { ClientsComponent } from "./clients.component";
 import { HomeComponenet } from "./home.component";
 import { FormsModule } from "@angular/forms";
+import { SharedModule } from "./shared/shared.module";
 
 @NgModule({
   declarations: [AppComponent, ClientsComponent, HomeComponenet],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, SharedModule],
   providers: [],
   bootstrap: [AppComponent],
 })

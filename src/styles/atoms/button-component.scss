@@ -1,0 +1,88 @@
+//TODO : refactor to reduce redundancy
+
+.app-button--primary {
+    align-items: center;
+    background-color: #284b63;
+    border-radius: 8px;
+    border-width: 0;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 16px;
+    height: 30px;
+    justify-content: center;
+    line-height: 1;
+    margin: .5rem;
+    outline: none;
+    overflow: hidden;
+    padding: 0 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.app-button--secondary {
+    align-items: center;
+    background-color: #8ea8c3;
+    border-radius: 8px;
+    border-width: 0;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 16px;
+    height: 30px;
+    justify-content: center;
+    line-height: 1;
+    margin: .5rem;
+    outline: none;
+    overflow: hidden;
+    padding: 0 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+//not yet used
+.app-button--ghost {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    color: #333;
+}
+
+.app-button--edit {
+    align-items: center;
+    background-color: #8ea8c3;
+    border-radius: 8px;
+    border-width: 0;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 16px;
+    height: 30px;
+    justify-content: center;
+    line-height: 1;
+    margin: .5rem;
+    outline: none;
+    overflow: hidden;
+    padding: 0 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.app-button--delete {
+    align-items: center;
+    background-color: grey;
+    border-radius: 8px;
+    border-width: 0;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
+    box-sizing: border-box;
+    color: #000;
+    font-size: 16px;
+    height: 30px;
+    justify-content: center;
+    line-height: 1;
+    margin: .5rem;
+    outline: none;
+    overflow: hidden;
+    padding: 0 32px;
+    text-align: center;
+    cursor: pointer;
+}
