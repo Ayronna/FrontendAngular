@@ -8,13 +8,33 @@ import { Component } from "@angular/core";
       <h3> Need improvements in this application</h3>
       <p>Go to clients tab and perform below actions</p>
       <ol>
-        <li>Edit the clients</li>
-        <li>Delete the clients</li>
-        <li>Search the client list using search box</li>
-        <li>Filter the clients by isActive checkbox</li>
-        <li>Add validations and unit tests</li>
+        <li><s>Edit the clients</s></li>
+        <li><s>Delete the clients</s></li>
+        <li><s>Search the client list using search box</s></li>
+        <li><s>Filter the clients by isActive checkbox</s></li>
+        <li><s>Add validations and unit tests</s></li>
         <li>Beautify the client list</li>
-        <li>Improve wherever you can :) </li>
+        <li>Split up the monolith ClientsComponent into smaller components</li>
+        <li>Consider server-side filtering for name</li>
+        <li>Add pagination to the client list</li>
+        <li>Add sorting to the client list</li>
+        <li>Add tests for the existing components</li>
+        <li>Remove all in-line styling and move to proper CSS classes</li>
+        <li>Fix styling, use BEM naming conventions where applicable</li>
+        <li>Centralize validation rules/messages</li>
+        <li>Provide reusable validators</li>
+        <li>Consider reactive forms instead of template-driven forms</li>
+        <li>Create a small validationService/helper library</li>
+        <li>Create a presentational error component to display validation errors</li>
+        <li>Accessibility improvements</li>
+        <li>Create and improve unit, integration tests</li>
+        <li>Consider application testing (Cypress?)</li>
+        <li>Enable strict mode in tsconfig.json</li>
+        <li>Improve UI and UX, make it more user friendly</li>
+        <li>Convert larger features to lazy-loaded modules</li>
+        <li>Check standalone components where applicable</li>
+        <li>Continue expanding the app!</li>
+
       </ol>
     </div>
   `,
@@ -37,4 +57,4 @@ import { Component } from "@angular/core";
     `,
   ],
 })
-export class HomeComponenet {}
+export class HomeComponent {}
