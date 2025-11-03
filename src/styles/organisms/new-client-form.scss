@@ -1,0 +1,61 @@
+.client-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+
+    &__title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+
+        &-input {
+            padding: 0.5rem 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.2s;
+
+            &:focus {
+                outline: none;
+                border-color: #007bff;
+            }
+        }
+
+        &-error {
+            color: #d9534f;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    }
+
+    &__checkbox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        input[type='checkbox'] {
+            margin-right: 0.5rem;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+
+        app-button {
+            flex: 1;
+        }
+    }
+}

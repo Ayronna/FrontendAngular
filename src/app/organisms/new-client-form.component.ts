@@ -23,67 +23,78 @@ interface Client {
   template: `
 <h3>Create new client</h3>
 
-<form #form="ngForm" (ngSubmit)="handleCreate(form)" novalidate>
-  <input
-    name="firstName"
-    type="text"
-    placeholder="First name"
-    [(ngModel)]="client.firstName"
-    required
-    pattern="^[A-Za-zÀ-ÖØ-öø-ÿ'’\\-\\s]+$"
-    #firstName="ngModel"
-  >
-  <div class="error" *ngIf="showErrors(firstName, submitted)">
-    <div *ngIf="hasError(firstName, 'required')">
-      {{ getValidationMessage('firstName', 'required') }}
-    </div>
-    <div *ngIf="hasError(firstName, 'pattern')">
-      {{ getValidationMessage('firstName', 'pattern') }}
+<form #form="ngForm" (ngSubmit)="handleCreate(form)" novalidate class="client-form">
+  <h3 class="client-form__title">Create new client</h3>
+
+  <div class="client-form__field">
+    <input
+      class="client-form__field-input"
+      name="firstName"
+      type="text"
+      placeholder="First name"
+      [(ngModel)]="client.firstName"
+      required
+      pattern="^[A-Za-zÀ-ÖØ-öø-ÿ'’\\-\\s]+$"
+      #firstName="ngModel"
+    >
+    <div class="client-form__field-error" *ngIf="showErrors(firstName, submitted)">
+      <div *ngIf="hasError(firstName, 'required')">
+        {{ getValidationMessage('firstName', 'required') }}
+      </div>
+      <div *ngIf="hasError(firstName, 'pattern')">
+        {{ getValidationMessage('firstName', 'pattern') }}
+      </div>
     </div>
   </div>
 
-  <input
-    name="lastName"
-    type="text"
-    placeholder="Last name"
-    [(ngModel)]="client.lastName"
-    required
-    pattern="^[A-Za-zÀ-ÖØ-öø-ÿ'’\\-\\s]+$"
-    #lastName="ngModel"
-  >
-  <div class="error" *ngIf="showErrors(lastName, submitted)">
-    <div *ngIf="hasError(lastName, 'required')">
-      {{ getValidationMessage('lastName', 'required') }}
-    </div>
-    <div *ngIf="hasError(lastName, 'pattern')">
-      {{ getValidationMessage('lastName', 'pattern') }}
-    </div>
-  </div>
-
-  <input
-    name="birthdate"
-    type="date"
-    placeholder="Birthdate"
-    [(ngModel)]="client.birthdate"
-    required
-    [attr.max]="maxDate"
-    #birthdate="ngModel"
-  >
-  <div class="error" *ngIf="showErrors(birthdate, submitted) || (submitted && isBirthdateInFuture())">
-    <div *ngIf="hasError(birthdate, 'required')">
-      {{ getValidationMessage('birthdate', 'required') }}
-    </div>
-    <div *ngIf="isBirthdateInFuture()">
-      {{ futureDateMessage }}
+  <div class="client-form__field">
+    <input
+      class="client-form__field-input"
+      name="lastName"
+      type="text"
+      placeholder="Last name"
+      [(ngModel)]="client.lastName"
+      required
+      pattern="^[A-Za-zÀ-ÖØ-öø-ÿ'’\\-\\s]+$"
+      #lastName="ngModel"
+    >
+    <div class="client-form__field-error" *ngIf="showErrors(lastName, submitted)">
+      <div *ngIf="hasError(lastName, 'required')">
+        {{ getValidationMessage('lastName', 'required') }}
+      </div>
+      <div *ngIf="hasError(lastName, 'pattern')">
+        {{ getValidationMessage('lastName', 'pattern') }}
+      </div>
     </div>
   </div>
 
-  <label>
+  <div class="client-form__field">
+    <input
+      class="client-form__field-input"
+      name="birthdate"
+      type="date"
+      placeholder="Birthdate"
+      [(ngModel)]="client.birthdate"
+      required
+      [attr.max]="maxDate"
+      #birthdate="ngModel"
+    >
+    <div class="client-form__field-error" *ngIf="showErrors(birthdate, submitted) || (submitted && isBirthdateInFuture())">
+      <div *ngIf="hasError(birthdate, 'required')">
+        {{ getValidationMessage('birthdate', 'required') }}
+      </div>
+      <div *ngIf="isBirthdateInFuture()">
+        {{ futureDateMessage }}
+      </div>
+    </div>
+  </div>
+
+  <label class="client-form__checkbox">
     <input type="checkbox" [(ngModel)]="client.isActive" name="isActive">
     Active
   </label>
 
-  <div>
+  <div class="client-form__buttons">
     <app-button type="submit">Create client</app-button>
     <app-button type="button" variant="secondary" (clicked)="cancel.emit()">Cancel</app-button>
   </div>

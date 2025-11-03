@@ -161,7 +161,6 @@ export class ClientsComponent {
     this.changePage(this.currentPage + 1);
   }
 
-  // Accept the client payload emitted by the new-client-form.
   createClient(clientPayload?: any) {
     const payload = clientPayload ?? this.newClient;
     this.clientService.createClient(payload).subscribe(() => {
@@ -190,13 +189,12 @@ export class ClientsComponent {
     });
   }
 
-  // Emit name changes to the debounced local filter instead of calling backend
-  // TODO: Add server-side filtering
+    // TODO: Consider server-side filtering
+    // Might not be needed, don't want to hammer the server on every keystroke
   onNameChanged(value: string) {
     this.nameFilter$.next(value);
   }
 
-  // called with the checkbox value emitted by the client-filter component
   onActiveChanged(value: boolean) {
     this.filterActive = value;
     this.loadFromServer();

@@ -3,16 +3,8 @@
 This project is built with [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0. You need to have the latest versions of Node.js and npm installed on your machine.
 
 <h3> Need improvements in this application</h3>
-<p>Go to client tab and perform below actions</p>
-<ol>
-        <li>Edit the clients</li>
-        <li>Delete the clients</li>
-        <li>Search the client list using search box</li>
-        <li>Filter the clients by isActive checkbox</li>
-        <li>Add validations and unit tests</li>
-        <li>Beautify the client list</li>
-        <li>Improve wherever you can :) </li>
-      </ol>
+<p>Check the Home page for a todo list!</p>
+
 
 ## 🚀 Getting Started
 
