@@ -19,26 +19,13 @@ import { debounceTime, distinctUntilChanged } from "rxjs/operators";
     ></new-client-form>
 
     <div class="clients">
-      <div class="clients-filter">
-        <h3>Filter clients</h3>
-        <div class="flex-wrapper">
-          <input
-            type="text"
-            placeholder="Type a name"
-            [(ngModel)]="filterText"
-            (ngModelChange)="onNameChanged($event)"
-          />
-          <div class="filter-checkbox-wrapper">
-            <input
-              id="filterCheckbox"
-              type="checkbox"
-              [(ngModel)]="filterActive"
-              (change)="onActiveChanged()"
-            />
-            <span style="padding-left: 8px"><label for="filterCheckbox">Show only active clients</label></span>
-          </div>
-        </div>
-      </div>
+      <!-- use the new standalone filter component -->
+      <client-filter
+        [filterText]="filterText"
+        [filterActive]="filterActive"
+        (nameChange)="onNameChanged($event)"
+        (activeChange)="onActiveChanged($event)"
+      ></client-filter>
 
       <div class="client-card" *ngFor="let client of filteredClients">
         <div *ngIf="editingClientId !== client.id">
@@ -184,7 +171,9 @@ export class ClientsComponent {
     this.nameFilter$.next(value);
   }
 
-  onActiveChanged() {
+  // called with the checkbox value emitted by the client-filter component
+  onActiveChanged(value: boolean) {
+    this.filterActive = value;
     this.loadFromServer();
   }
 }

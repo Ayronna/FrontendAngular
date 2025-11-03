@@ -1,0 +1,53 @@
+.clients-filter {
+    display: flex;
+    height: 40px;
+    margin: 1rem;
+}
+
+// TODO : Refactor
+// TODO : Make checkbox a reusable component
+.clients-filter--checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+    margin-left: 2rem;
+
+    input[type="checkbox"] {
+        /* Hide native checkbox but keep it accessible */
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        position: relative;
+        outline: none;
+
+        &:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 6px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+        }
+    }
+
+    label {
+        cursor: pointer;
+        user-select: none;
+    }
+}

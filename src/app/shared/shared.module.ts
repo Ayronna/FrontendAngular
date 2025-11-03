@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ButtonComponent } from '../atoms/button.component';
 import { NewClientFormComponent } from '../organisms/new-client-form.component';
+import { ClientFilterComponent } from '../organisms/client-filter.component';
 
 @NgModule({
   // Standalone components must NOT be declared in an NgModule.
@@ -13,13 +14,15 @@ import { NewClientFormComponent } from '../organisms/new-client-form.component';
     CommonModule,
     FormsModule,
     ButtonComponent, // import standalone component
-    NewClientFormComponent,  
+    NewClientFormComponent,
+    ClientFilterComponent,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ButtonComponent, // re-export for consumers of SharedModule
     NewClientFormComponent,
+    ClientFilterComponent,
   ],
 })
 export class SharedModule {}

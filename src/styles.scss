@@ -4,12 +4,6 @@ body {
     font-family: Helvetica, sans-serif;
 }
 
-input {
-    width: 250px;
-    height: 40px;
-    margin: 8px;
-}
-
 .header {
     border-bottom: 1px solid #006175;
     text-align: center;
@@ -53,4 +47,10 @@ a {
     color: #006175;
 }
 
+// Import Atoms
 @import 'styles/atoms/button-component.scss';
+
+// Import Molecules
+
+// Import Organisms
+@import 'styles/organisms/client-filter.scss';
