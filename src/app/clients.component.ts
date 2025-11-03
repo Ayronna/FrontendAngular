@@ -19,7 +19,6 @@ import { debounceTime, distinctUntilChanged } from "rxjs/operators";
     ></new-client-form>
 
     <div class="clients">
-      <!-- use the new standalone filter component -->
       <client-filter
         [filterText]="filterText"
         [filterActive]="filterActive"
@@ -27,30 +26,12 @@ import { debounceTime, distinctUntilChanged } from "rxjs/operators";
         (activeChange)="onActiveChanged($event)"
       ></client-filter>
 
-      <div class="client-card" *ngFor="let client of filteredClients">
-        <div *ngIf="editingClientId !== client.id">
-          <span>
-            {{ client.firstName }} {{ client.lastName }} -
-            {{ client.birthdate }} - {{ client.isActive }}
-          </span>
-          <span>
-            <a (click)="startEdit(client)" style="cursor:pointer">Edit</a>
-            <a (click)="deleteClient(client)" style="padding-left: 8px; cursor:pointer; color:darkred">Delete</a>
-          </span>
-        </div>
-
-        <div *ngIf="editingClientId === client.id" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
-          <input type="text" [(ngModel)]="editClientCopy.firstName" />
-          <input type="text" [(ngModel)]="editClientCopy.lastName" />
-          <input type="date" [(ngModel)]="editClientCopy.birthdate" />
-          <label style="display:flex; align-items:center; gap:8px">
-            <input type="checkbox" [(ngModel)]="editClientCopy.isActive" />
-            Active
-          </label>
-          <button (click)="saveEdit()">Save</button>
-          <button (click)="cancelEdit()" style="margin-left:4px">Cancel</button>
-        </div>
-      </div>
+      <client-card
+        *ngFor="let client of filteredClients"
+        [client]="client"
+        (save)="handleSave($event)"
+        (remove)="deleteClient($event)"
+      ></client-card>
     </div>
   `,
   standalone: false,
@@ -68,9 +49,6 @@ export class ClientsComponent {
   filteredClients: any[] = [];
   filterText: string = "";
   filterActive: boolean = false;
-
-  editingClientId: number | null = null;
-  editClientCopy: any = {};
 
   clientService;
 
@@ -95,7 +73,7 @@ export class ClientsComponent {
           ? data.map((c: any) => ({
               ...c,
               id: c.id != null && !isNaN(Number(c.id)) ? Number(c.id) : c.id,
-              isActive: c.isActive === true,
+              isActive: this.parseBoolean(c.isActive),
             }))
           : [];
 
@@ -108,6 +86,11 @@ export class ClientsComponent {
         this.filteredClients = [];
       }
     );
+  }
+
+  private parseBoolean(value: any): boolean {
+    if (value === true || value === "true" || value === 1 || value === "1") return true;
+    return false;
   }
 
   private applyLocalNameFilter(name: string) {
@@ -139,27 +122,15 @@ export class ClientsComponent {
     });
   }
 
-  startEdit(client: any) {
-    this.editingClientId = client.id;
-    this.editClientCopy = { ...client };
-  }
-
-  saveEdit() {
-    if (this.editingClientId == null) return;
-    this.clientService.updateClient(this.editingClientId, this.editClientCopy).subscribe(() => {
-      this.editingClientId = null;
-      this.editClientCopy = {};
+  handleSave(updatedClient: any) {
+    if (!updatedClient || updatedClient.id == null) return;
+    this.clientService.updateClient(updatedClient.id, updatedClient).subscribe(() => {
       this.loadFromServer();
     });
   }
 
-  cancelEdit() {
-    this.editingClientId = null;
-    this.editClientCopy = {};
-  }
-
   deleteClient(client: any) {
-    if (!confirm(`Delete client ${client.firstName} ${client.lastName}?`)) return;
+    if (!client || client.id == null) return;
     this.clientService.deleteClient(client.id).subscribe(() => {
       this.loadFromServer();
     });

@@ -63,3 +63,7 @@ DELETE  /clients/:id
 ## 📚 Additional Resources
 
 - Usefull example about [JSON-Server](https://jsonplaceholder.typicode.com/)
+
+
+## 📚 Attributions
+- Delete icon created by Ilham Fitrotul Hayat - Flaticon
